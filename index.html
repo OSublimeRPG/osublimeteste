@@ -1,0 +1,289 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Sublimação - Personagens</title>
+  <link rel="stylesheet" href="https://use.typekit.net/ccq2nwv.css">
+  <style>
+    @import url("//fonts.googleapis.com/css2?family=Marcellus+SC:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500;1,600;1,700&display=swap");
+    @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@1,600&family=Libre+Baskerville&display=swap');
+
+    body {
+      margin: 0;
+      font-family: 'Libre Baskerville', serif;
+      background-color: #2b1f1a;
+      background-image: url("https://www.transparenttextures.com/patterns/45-degree-fabric-dark.png");
+      color: #f0e9df;
+    }
+
+    header {
+      background-color: #2e2421;
+      padding: 20px;
+      display: flex;
+      justify-content: center;
+      border-bottom: 2px solid #a67c52;
+    }
+
+    header nav a {
+      color: #f0e9df;
+      text-decoration: none;
+      margin: 0 20px;
+      font-size: 18px;
+      text-transform: uppercase;
+      transition: color 0.3s;
+    }
+
+    header nav a:hover {
+      color: #d6b08c;
+    }
+
+    .container {
+      padding: 40px;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    .secao-personagens {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+      gap: 20px;
+    }
+
+    .card-personagem {
+      background: #3e2e28;
+      padding: 20px;
+      border-radius: 10px;
+      box-shadow: 0 2px 10px #00000055;
+      transition: transform 0.3s;
+      cursor: pointer;
+    }
+
+    .card-personagem img {
+      width: 100%;
+      border-radius: 8px;
+      margin-bottom: 10px;
+    }
+
+    .card-personagem:hover {
+      transform: translateY(-5px);
+    }
+
+    .abrir-ficha-btn {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      background-color: #a67c52;
+      color: white;
+      border: none;
+      border-radius: 50%;
+      width: 60px;
+      height: 60px;
+      font-size: 36px;
+      cursor: pointer;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+    }
+
+    .ficha-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.6);
+      backdrop-filter: blur(5px);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.3s ease;
+    }
+
+    .ficha-overlay.ativo {
+      opacity: 1;
+      pointer-events: auto;
+    }
+
+    .ficha-personagem {
+      background: #2b1f1a;
+      padding: 30px;
+      border-radius: 15px;
+      width: 90%;
+      max-width: 600px;
+      animation: flutuar 0.5s ease forwards;
+      color: #f0e9df;
+    }
+
+    .ficha-detalhada img {
+      max-width: 100%;
+      border-radius: 8px;
+      margin-bottom: 15px;
+    }
+
+    @keyframes flutuar {
+      from {
+        transform: scale(0.9) translateY(30px);
+        opacity: 0;
+      }
+      to {
+        transform: scale(1) translateY(0);
+        opacity: 1;
+      }
+    }
+
+    form label {
+      display: block;
+      margin-top: 20px;
+      font-size: 20px;
+    }
+
+    form input, form textarea {
+      width: 100%;
+      padding: 6px;
+      font-size: 18px;
+      background: #3e2e28;
+      border: 1px solid #a67c52;
+      border-radius: 3px;
+      color: #f0e9df;
+    }
+
+    form button {
+      margin-top: 20px;
+      padding: 12px 20px;
+      font-size: 20px;
+      background-color: #a67c52;
+      color: #fff;
+      border: none;
+      border-radius: 3px;
+      cursor: pointer;
+      display: block;
+      width: 100%;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <nav>
+      <a href="#inicio">Início</a>
+      <a href="#regras">Regras</a>
+      <a href="#personagens">Personagens</a>
+    </nav>
+  </header>
+
+  <div class="container">
+    <div class="secao-personagens" id="listaPersonagens"></div>
+  </div>
+
+  <button class="abrir-ficha-btn" onclick="abrirFicha()">+</button>
+
+  <div class="ficha-overlay" id="overlayFicha">
+    <div class="ficha-personagem">
+      <h2>Criador de Personagem</h2>
+      <form id="formPersonagem">
+        <label for="nome">Nome</label>
+        <input type="text" id="nome" required>
+
+        <label for="conceito">Profissão</label>
+        <input type="text" id="conceito" required>
+
+        <label for="historia">História</label>
+        <textarea id="historia" rows="4" required></textarea>
+
+        <label for="itens">3 Itens (separados por vírgula)</label>
+        <input type="text" id="itens" required>
+
+        <label for="imagem">URL da Imagem</label>
+        <input type="url" id="imagem">
+
+        <button type="submit">Salvar Personagem</button>
+      </form>
+    </div>
+  </div>
+
+  <div class="ficha-overlay" id="overlayDetalhes">
+    <div class="ficha-personagem ficha-detalhada" id="detalhesPersonagem"></div>
+  </div>
+
+  <script>
+    function abrirFicha() {
+      document.getElementById('overlayFicha').classList.add('ativo');
+    }
+
+    function fecharFicha() {
+      document.getElementById('overlayFicha').classList.remove('ativo');
+    }
+
+    function fecharDetalhes() {
+      document.getElementById('overlayDetalhes').classList.remove('ativo');
+    }
+
+    document.getElementById('overlayFicha').addEventListener('click', (e) => {
+      if (e.target === e.currentTarget) fecharFicha();
+    });
+
+    document.getElementById('overlayDetalhes').addEventListener('click', (e) => {
+      if (e.target === e.currentTarget) fecharDetalhes();
+    });
+
+    const lista = document.getElementById('listaPersonagens');
+    const form = document.getElementById('formPersonagem');
+
+    function salvarPersonagens(personagens) {
+      localStorage.setItem('personagens', JSON.stringify(personagens));
+    }
+
+    function carregarPersonagens() {
+      const personagens = JSON.parse(localStorage.getItem('personagens')) || [];
+      lista.innerHTML = '';
+      personagens.forEach((p, index) => {
+        const card = document.createElement('div');
+        card.className = 'card-personagem';
+        card.innerHTML = `
+          ${p.imagem ? `<img src="${p.imagem}" alt="Imagem de ${p.nome}">` : ''}
+          <h3>${p.nome}</h3>
+          <p><strong>${p.profissao}</strong></p>
+          <p><em>Registrado em ${p.data}</em></p>
+          <button onclick="verFicha(${index})">Acessar Ficha</button>
+        `;
+        lista.appendChild(card);
+      });
+    }
+
+    function verFicha(index) {
+      const personagens = JSON.parse(localStorage.getItem('personagens')) || [];
+      const p = personagens[index];
+      const detalhes = document.getElementById('detalhesPersonagem');
+      detalhes.innerHTML = `
+        ${p.imagem ? `<img src="${p.imagem}" alt="Imagem de ${p.nome}">` : ''}
+        <h2>${p.nome}</h2>
+        <p><strong>Profissão:</strong> ${p.profissao}</p>
+        <p><strong>História:</strong><br>${p.historia}</p>
+        <p><strong>Itens:</strong> ${p.itens.join(', ')}</p>
+        <p><em>Registrado em ${p.data}</em></p>
+      `;
+      document.getElementById('overlayDetalhes').classList.add('ativo');
+    }
+
+    form.addEventListener('submit', (e) => {
+      e.preventDefault();
+      const personagens = JSON.parse(localStorage.getItem('personagens')) || [];
+      const novo = {
+        nome: document.getElementById('nome').value,
+        profissao: document.getElementById('conceito').value,
+        historia: document.getElementById('historia').value,
+        itens: document.getElementById('itens').value.split(',').map(item => item.trim()),
+        imagem: document.getElementById('imagem').value,
+        data: new Date().toLocaleDateString('pt-BR')
+      };
+      personagens.push(novo);
+      salvarPersonagens(personagens);
+      carregarPersonagens();
+      fecharFicha();
+      form.reset();
+    });
+
+    window.onload = carregarPersonagens;
+  </script>
+</body>
+</html>
